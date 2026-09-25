@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melhor do Mundo | Votação Oficial</title>
+  <meta name="description" content="Vote no melhor do mundo! Sistema de votação simples, interativo e com contagem de votos em tempo real.">
+  
+  <!-- Fontes do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Ícones Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Canvas Confetti para celebração -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Efeitos de iluminação de fundo -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <div class="app-container">
+    <!-- Header Principal -->
+    <header class="header">
+      <div class="badge-wrapper">
+        <span class="live-pill">
+          <span class="live-indicator"></span>
+          VOTAÇÃO AO VIVO
+        </span>
+        <span class="edition-pill">EDIÇÃO 2026</span>
+      </div>
+
+      <h1 class="main-title">
+        MELHOR DO <span class="gradient-text">MUNDO</span>
+      </h1>
+      <p class="subtitle">
+        Quem merece o topo supremo? Deixe o seu voto e acompanhe a apuração instantânea em tempo real.
+      </p>
+
+      <!-- Barra de Resumo Geral -->
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph-bold ph-chart-bar"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Total de Votos</span>
+            <span class="stat-value" id="totalVotesCount">0</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph-bold ph-crown"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Líder Atual</span>
+            <span class="stat-value highlight" id="currentLeaderName">-</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="ph-bold ph-users-three"></i></div>
+          <div class="stat-info">
+            <span class="stat-label">Candidatos</span>
+            <span class="stat-value" id="candidatesCount">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Ações Rápidas -->
+      <div class="actions-toolbar">
+        <button id="btnOpenModal" class="btn btn-primary">
+          <i class="ph-bold ph-plus-circle"></i>
+          Adicionar Candidato
+        </button>
+
+        <div class="toolbar-right">
+          <button id="btnResetVotes" class="btn btn-ghost" title="Zerar todos os votos">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i>
+            Zerar Votos
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Grid de Candidatos -->
+    <main class="voting-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="ph-bold ph-trophy"></i>
+          Quadro de Votação
+        </h2>
+        <span class="auto-sort-hint">
+          <i class="ph-bold ph-arrows-down-up"></i>
+          Ordenado pelos mais votados
+        </span>
+      </div>
+
+      <div class="candidates-grid" id="candidatesGrid">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </main>
+
+    <!-- Footer minimalista -->
+    <footer class="footer">
+      <p>Melhor do Mundo © 2026 • Sistema de Votação Rápido e Seguro</p>
+    </footer>
+  </div>
+
+  <!-- Modal para Adicionar Novo Candidato -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="ph-bold ph-user-plus"></i> Novo Candidato</h3>
+        <button class="modal-close" id="btnCloseModal">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+
+      <form id="addCandidateForm">
+        <div class="form-group">
+          <label for="candidateName">Nome do Candidato *</label>
+          <input type="text" id="candidateName" placeholder="Ex: Lionel Messi, Vinicius Jr..." required maxlength="35">
+        </div>
+
+        <div class="form-group">
+          <label for="candidateRole">Categoria / Descrição</label>
+          <input type="text" id="candidateRole" placeholder="Ex: Futebol, Criatividade, Gamer..." maxlength="40">
+        </div>
+
+        <div class="form-group">
+          <label for="candidateImage">URL da Foto (opcional)</label>
+          <input type="url" id="candidateImage" placeholder="https://exemplo.com/foto.jpg">
+          <span class="form-help">Deixe em branco para usar um avatar personalizado automático.</span>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="btnCancelModal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="ph-bold ph-check"></i>
+            Cadastrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação para Reset -->
+  <div class="modal-backdrop" id="resetModalBackdrop">
+    <div class="modal-content reset-modal">
+      <div class="modal-header warning">
+        <h3><i class="ph-bold ph-warning"></i> Confirmar Reinício</h3>
+        <button class="modal-close" id="btnCloseResetModal">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+      <p class="modal-description">
+        Deseja zerar a contagem de todos os votos? Esta ação não pode ser desfeita.
+      </p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="btnCancelReset">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmReset">
+          <i class="ph-bold ph-trash"></i>
+          Sim, Zerar Votos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
