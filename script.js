@@ -243,7 +243,7 @@ function triggerLeaderCelebration() {
       particleCount: 80,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ['#ffd700', '#f59e0b', '#ffffff', '#6366f1']
+      colors: ['#c084fc', '#a855f7', '#34d399', '#f472b6', '#ffffff']
     });
   }
 }
@@ -264,7 +264,7 @@ window.removeCandidate = function(candidateId) {
 // Gerador de avatar com iniciais elegantes caso não tenha foto
 function generateDefaultAvatar(name) {
   const cleanName = encodeURIComponent(name || 'V');
-  return `https://ui-avatars.com/api/?name=${cleanName}&background=1e293b&color=f59e0b&bold=true&size=128`;
+  return `https://ui-avatars.com/api/?name=${cleanName}&background=1a1040&color=c084fc&bold=true&size=128`;
 }
 
 // Configuração dos Eventos e Modais
